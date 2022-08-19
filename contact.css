@@ -1,0 +1,22 @@
+body {
+  margin: 0px;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: rgb(221, 221, 221);
+}
+.container {
+  display: flex;
+  margin: 100px;
+  border-radius: 8px;
+}
+nav {
+  height: 7vh;
+}
+
+.nav-item {
+  padding-left: 30px;
+}
+
+.container-form {
+  width: 30%;
+}
+
