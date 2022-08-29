@@ -24,20 +24,33 @@
             <li class="nav-item">
               <a class="nav-link" aria-current="page" href='/'>Home</a>
             </li>
+            {{#if isLogin}}
             <li class="nav-item">
               <a class="nav-link text-dark active" aria-current="page" href='/add-project'>Add Project</a>
             </li>
+            {{/if}}
           </ul>
+        {{#if isLogin}}
+        <a href='#' class="btn text-dark px-3 rounded-pill">Hai, {{user.name}}</a>
+        <a href='/logout' class="btn text-dark px-3 rounded-pill">Logout</a>
 
+        {{else}}
+        <a href='/login' class="btn text-dark px-3 rounded-pill">Login</a>
+        <a href='/register' class="btn text-dark px-3 rounded-pill mx-3">Register</a>
+        {{/if}}
           <a href='/contact' class="btn bg-dark text-white px-3 rounded-pill">Contact Me </a>
         </div>
       </div>
   </nav>
 
     <section>
-      
+      {{#if messages.success }}
+          <div class="alert alert-success alert-dismissible fade show" role="alert">
+          <strong>{{messages.success}}</strong>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+      {{/if}}
       <div class="container bg-white">
-
       <div class="main-content">
         <div class="firstContent">
           <h2>Hi Welcome to my hut</h2>
@@ -108,6 +121,7 @@
                     {{/if}}
                 </div>
 
+                {{#if isLogin}}
                 <div class="btn-group d-flex justify-content-center">
                   <a href="/edit-project/{{this.id}}">
                     <button class="btn-edit bg-black text-white px-3">Edit Post</button>
@@ -116,6 +130,7 @@
                     <button class="btn-delete bg-black text-white px-3">Delete Post</button>
                   </a> 
                 </div>
+                {{/if}}
             </div>
         </div>
         <br>
