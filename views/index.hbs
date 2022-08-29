@@ -100,12 +100,13 @@
         <div class="col-sm-3">
             <div class="card">
                <a href="/project-detail/{{this.id}}" target="_blank">
-               <img src="/assets/images/fullstack.jpg" class="card-img-top" alt="gambar1">
+               <img src="uploads/{{this.image}}" class="card-img-top" alt="gambar1">
                </a>
                 <div class="card-body">
                  
                     <h5 class="card-title">{{this.project_name}}</h5>
                     <p class="fw-light"> duration : {{this.duration}}</p>
+                    <p class="card-text">author : {{author}} </p>
                     <p class="card-text">{{this.description}}</p>
                     {{#if technologies.[0]}}
                       <i class="fa-brands fa-xl fa-{{this.technologies.[0]}}" ></i>

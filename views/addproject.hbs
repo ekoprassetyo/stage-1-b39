@@ -39,7 +39,7 @@
     <div class="container-fluid d-flex justify-content-center align-items-center ">
         <div class="container-form mt-3 ">
             <h2 class="mb-5 text-center">Add My Project</h2>
-            <form action="/add-project" method="post">
+            <form action="/add-project" method="post" enctype="multipart/form-data">
                 <div class="mb-3">
                     <label for="inputProject" class="form-label">Project Name</label>
                     <input type="text" class="form-control" id="inputProject" name="inputProject">
@@ -85,7 +85,7 @@
 
                 <div class="mb-3 mt-3">
                     <label for="inputImage" class="form-label">Upload Image</label>
-                    <input type="file" class="form-control" id="inputImage" name="inputImage" aria-describedby="emailHelp">
+                    <input type="file" class="form-control" id="inputImage" name="inputImage">
                 </div>
 
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">

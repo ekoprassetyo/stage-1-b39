@@ -1,8 +1,10 @@
 const express = require('express') // import express
-const db = require('./connection/db')
 const bcrypt = require('bcrypt')
 const session = require('express-session') // import session untuk menyimpan data ke dalam browser
 const flash = require('express-flash')
+
+const db = require('./connection/db')
+const upload = require('./middleware/fileUpload')
 
 const app = express()
 const port = 8000
@@ -10,6 +12,7 @@ const port = 8000
 
 app.set('view engine', 'hbs') // method untuk set view engine 
 app.use('/assets', express.static(__dirname + '/assets')) // path folder assets
+app.use('/uploads', express.static(__dirname + '/uploads')) // path folder assets
 app.use(express.urlencoded({extended: false}))
 app.use(flash())
 
@@ -35,7 +38,9 @@ app.get('/', function (request, response) {
 
     console.log(request.session);
         
-        client.query('SELECT * FROM tb_projects ORDER BY id DESC', function (err, result) {
+    const query = `SELECT tb_projects.id,tb_projects.project_name,tb_projects.start_date,tb_projects.end_date,tb_projects.description,tb_projects.technologies,tb_projects.image,tb_user.name as author,tb_user.id as author_id FROM tb_projects LEFT JOIN tb_user on tb_projects.user_id=tb_user.id ORDER BY id DESC`
+
+        client.query(query, function (err, result) {
             if (err) throw err // menampilkan error dari queary
             
             // console.log(result.rows);
@@ -69,18 +74,21 @@ app.get('/add-project', function (request, response) {
     response.render('addproject')
 })
 
-app.post('/add-project', function (request, response) {
+app.post('/add-project',upload.single('inputImage'), function (request, response) {
 
     // console.log(request.body);
 
     let {
-        inputProject: title,startDate: start,endDate: end,inputDescription: description,react,node,vuejs,js,inputImage: image
+        inputProject: title,startDate: start,endDate: end,inputDescription: description,react,node,vuejs,js
     } = request.body
+
+    // console.log(request.file.filename);
+
+    const userId = request.session.user.id
+    const image = request.file.filename
     
-       let query = `INSERT INTO tb_projects (project_name, start_date, end_date, description, technologies, image) VALUES 
-        ('${title}','${start}','${end}','${description}', '{"${react}","${node}","${vuejs}","${js}"}', '${image}' )`
-
-
+    let query = `INSERT INTO tb_projects (project_name, start_date, end_date, description, technologies, image, user_id) VALUES 
+        ('${title}','${start}','${end}','${description}', '{"${react}","${node}","${vuejs}","${js}"}', '${image}', '${userId}' )`
 
     client.query(query, function(err, result){
 
@@ -99,7 +107,7 @@ app.get('/project-detail/:id', function (request, response) {
             if (err) throw err // menampilkan error dari queary
             
             let data = result.rows
-            // console.log(data);
+            console.log(data);
             
             let dataProject = data.map(function(item){
                 item.technologies = item.technologies.map(function (tech){
